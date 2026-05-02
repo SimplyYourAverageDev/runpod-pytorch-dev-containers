@@ -77,4 +77,12 @@ target "pytorch-matrix" {
   tags = [
     "${IMAGE_NAMESPACE}/runpod-pytorch-dev:${RELEASE_VERSION}${RELEASE_SUFFIX}-cu${build.cuda_code}-torch${build.torch_code}-${build.ubuntu_name}",
   ]
+
+  cache-from = [
+    "type=gha,scope=pytorch-${build.cuda_code}-torch${build.torch_code}",
+  ]
+
+  cache-to = [
+    "type=gha,scope=pytorch-${build.cuda_code}-torch${build.torch_code},mode=max",
+  ]
 }

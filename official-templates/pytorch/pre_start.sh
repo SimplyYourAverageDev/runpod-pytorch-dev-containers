@@ -8,26 +8,32 @@ export BUN_INSTALL=/root/.bun
 export FNM_DIR=/root/.local/share/fnm
 export PATH=/root/.bun/bin:/root/.local/bin:/root/.local/share/fnm:${PATH}
 
-echo "[pre_start] bun upgrade"
-bun upgrade
+run_update() {
+  local name="$1"
+  shift
 
-echo "[pre_start] uv self update"
-uv self update
+  echo "[pre_start] ${name}"
+  timeout 180s bash -lc "$*" || echo "[pre_start] ${name} failed or timed out"
+}
 
-echo "[pre_start] fnm install --lts"
-eval "$(fnm env --shell bash)"
-fnm install --lts
+run_update "bun + global CLIs" '
+  bun upgrade
+  bun update -g --latest @openai/codex opencode-ai \
+    || bun add -g @openai/codex@latest opencode-ai@latest
+' &
 
-echo "[pre_start] bun update -g --latest codex + opencode"
-# bun update -g --latest is the documented form; fall back to a forced reinstall
-# in case bun's global update path misses a package (oven-sh/bun#25585).
-bun update -g --latest @openai/codex opencode-ai \
-  || bun add -g @openai/codex@latest opencode-ai@latest
+run_update "uv + nvitop" '
+  uv self update
+  uv tool upgrade nvitop
+' &
 
-echo "[pre_start] claude update"
-claude update
+run_update "fnm latest LTS" '
+  eval "$(fnm env --shell bash)"
+  fnm install --lts
+' &
 
-echo "[pre_start] uv tool upgrade nvitop"
-uv tool upgrade nvitop
+run_update "claude update" "claude update" &
+
+wait
 
 echo "[pre_start] tool self-updates complete"
