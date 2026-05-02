@@ -14,13 +14,28 @@ permissions:
   actions: write
   contents: read
 
+concurrency:
+  group: docker-publish-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   IMAGE_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE || vars.DOCKERHUB_USERNAME || 'youraveragedev' }}
 
 jobs:
   pytorch:
-    name: PyTorch Runpod images
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - name: PyTorch 2.8.0 / CUDA 12.8.1
+            target: pytorch-ubuntu2404-cu1281-torch280
+          - name: PyTorch 2.9.1 / CUDA 12.8.1
+            target: pytorch-ubuntu2404-cu1281-torch291
+          - name: PyTorch 2.9.1 / CUDA 13.0.0
+            target: pytorch-ubuntu2404-cu1300-torch291
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -41,4 +56,5 @@ jobs:
           files: |
             official-templates/shared/versions.hcl
             official-templates/pytorch/docker-bake.hcl
+          targets: ${{ matrix.target }}
           push: true
