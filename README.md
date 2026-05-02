@@ -1,6 +1,6 @@
-# Runpod Containers
+# Runpod PyTorch Dev Containers
 
-This repository contains the Dockerfiles for the Runpod containers used for our official templates. Built containers are available on the [Docker Hub](https://hub.docker.com/u/runpod).
+This repository contains Runpod-ready PyTorch Docker images with CUDA, JupyterLab, SSH, and developer tooling preinstalled. Built containers are published to [Docker Hub](https://hub.docker.com/r/simplyyouraveragedev/runpod-pytorch-dev).
 
 ## Container Requirements
 
@@ -14,7 +14,7 @@ The following dependencies are required for all images for Runpod platform funct
 
 ### README
 
-Every container folder has its own README.md file, displayed on Docker Hub and in the template section on the Runpod website. When containers open ports other than 8888 through the proxy, the README guides users while services are starting up.
+The PyTorch container folder has its own README.md file with the published image tags.
 
 ## Building Containers
 
@@ -28,13 +28,13 @@ Use it like this:
 
 ```bash
 # Build the default targets for a template
-./bake.sh base
+./bake.sh pytorch
 
 # Build a specific target or group of targets
-./bake.sh base cuda-ubuntu2204-1290
+./bake.sh pytorch pytorch-ubuntu2404-cu1281-torch280
 
 # Build the default targets and load them to the local Docker daemon
-./bake.sh base --load
+./bake.sh pytorch --load
 ```
 
 ### Version Definitions

@@ -3,41 +3,22 @@
 variable "TORCH_META" {
   default = {
     "2.9.1" = {}
-    "2.9.0" = {
-      torchvision = "0.24.0"
-    }
     "2.8.0" = {
       torchvision = "0.23.0"
     }
-    "2.7.1" = {
-      torchvision = "0.22.1"
-    }
-    "2.6.0" = {
-      torchvision = "0.21.0"
-    }
   }
+}
+
+variable "IMAGE_NAMESPACE" {
+  default = "simplyyouraveragedev"
 }
 
 # We need to grab the most compatible wheel for a given CUDA version and Torch version pair
 # At times, this requires grabbing a wheel built for a different CUDA version.
 variable "CUDA_TORCH_COMBINATIONS" {
   default = [
-    { cuda_version = "12.8.1", torch = "2.6.0", whl_src = "126" },
-    { cuda_version = "12.8.1", torch = "2.7.1", whl_src = "128" },
     { cuda_version = "12.8.1", torch = "2.8.0", whl_src = "128" },
-    { cuda_version = "12.8.1", torch = "2.9.0", whl_src = "128" },
     { cuda_version = "12.8.1", torch = "2.9.1", whl_src = "128" },
-    
-    { cuda_version = "12.9.0", torch = "2.6.0", whl_src = "126" },
-    { cuda_version = "12.9.0", torch = "2.7.1", whl_src = "128" },
-    { cuda_version = "12.9.0", torch = "2.8.0", whl_src = "129" },
-    { cuda_version = "12.9.0", torch = "2.9.0", whl_src = "129" },
-    { cuda_version = "12.9.0", torch = "2.9.1", whl_src = "129" },
-
-    { cuda_version = "13.0.0", torch = "2.6.0", whl_src = "126" },
-    { cuda_version = "13.0.0", torch = "2.7.1", whl_src = "128" },
-    { cuda_version = "13.0.0", torch = "2.8.0", whl_src = "129" },
-    { cuda_version = "13.0.0", torch = "2.9.0", whl_src = "130" },
     { cuda_version = "13.0.0", torch = "2.9.1", whl_src = "130" },
   ]
 }
@@ -94,6 +75,6 @@ target "pytorch-matrix" {
   }
   
   tags = [
-    "runpod/pytorch:${RELEASE_VERSION}${RELEASE_SUFFIX}-cu${build.cuda_code}-torch${build.torch_code}-${build.ubuntu_name}",
+    "${IMAGE_NAMESPACE}/runpod-pytorch-dev:${RELEASE_VERSION}${RELEASE_SUFFIX}-cu${build.cuda_code}-torch${build.torch_code}-${build.ubuntu_name}",
   ]
 }
