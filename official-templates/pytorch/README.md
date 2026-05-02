@@ -27,11 +27,11 @@ Focus on your models, not your environment setup.
 
 ### CUDA 12.8.1:
 - Torch 2.8.0:
-  - Ubuntu 24.04: `simplyyouraveragedev/runpod-pytorch-dev:1.0.3-cu1281-torch280-ubuntu2404`
+  - Ubuntu 24.04: `youraveragedev/runpod-pytorch-dev:1.0.3-cu1281-torch280-ubuntu2404`
 - Torch 2.9.1:
-  - Ubuntu 24.04: `simplyyouraveragedev/runpod-pytorch-dev:1.0.3-cu1281-torch291-ubuntu2404`
+  - Ubuntu 24.04: `youraveragedev/runpod-pytorch-dev:1.0.3-cu1281-torch291-ubuntu2404`
 
 ### CUDA 13.0.0:
 - Torch 2.9.1:
-  - Ubuntu 24.04: `simplyyouraveragedev/runpod-pytorch-dev:1.0.3-cu1300-torch291-ubuntu2404`
+  - Ubuntu 24.04: `youraveragedev/runpod-pytorch-dev:1.0.3-cu1300-torch291-ubuntu2404`
 </div>

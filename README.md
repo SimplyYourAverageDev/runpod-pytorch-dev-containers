@@ -1,6 +1,6 @@
 # Runpod PyTorch Dev Containers
 
-This repository contains Runpod-ready PyTorch Docker images with CUDA, JupyterLab, SSH, and developer tooling preinstalled. Built containers are published to [Docker Hub](https://hub.docker.com/r/simplyyouraveragedev/runpod-pytorch-dev).
+This repository contains Runpod-ready PyTorch Docker images with CUDA, JupyterLab, SSH, and developer tooling preinstalled. Built containers are published to [Docker Hub](https://hub.docker.com/r/youraveragedev/runpod-pytorch-dev).
 
 ## Container Requirements
 

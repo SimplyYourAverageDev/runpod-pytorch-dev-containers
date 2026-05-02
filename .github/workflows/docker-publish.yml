@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  IMAGE_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE || vars.DOCKERHUB_USERNAME || 'simplyyouraveragedev' }}
+  IMAGE_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE || vars.DOCKERHUB_USERNAME || 'youraveragedev' }}
 
 jobs:
   pytorch:

@@ -10,7 +10,7 @@ variable "TORCH_META" {
 }
 
 variable "IMAGE_NAMESPACE" {
-  default = "simplyyouraveragedev"
+  default = "youraveragedev"
 }
 
 # We need to grab the most compatible wheel for a given CUDA version and Torch version pair
