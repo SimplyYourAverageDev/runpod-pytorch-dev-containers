@@ -30,10 +30,20 @@ run_update "uv + nvitop" '
 run_update "fnm latest LTS" '
   eval "$(fnm env --shell bash)"
   fnm install --lts
+  fnm default lts-latest
+  fnm use default
+  for tool in node npm npx corepack; do
+    if command -v "${tool}" >/dev/null 2>&1; then
+      ln -sf "$(command -v "${tool}")" "/usr/local/bin/${tool}"
+    fi
+  done
 ' &
 
 run_update "claude update" "claude update" &
 
 wait
+
+run_update "codex MCP + config" "/usr/local/bin/runpod-codex-init"
+run_update "global agent instructions" "/usr/local/bin/runpod-agent-instructions"
 
 echo "[pre_start] tool self-updates complete"
