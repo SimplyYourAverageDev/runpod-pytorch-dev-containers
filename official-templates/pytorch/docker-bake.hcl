@@ -1,25 +1,12 @@
-# https://pytorch.org/get-started/locally/
-
-variable "TORCH_META" {
-  default = {
-    "2.9.1" = {}
-    "2.8.0" = {
-      torchvision = "0.23.0"
-    }
-  }
-}
-
 variable "IMAGE_NAMESPACE" {
   default = "youraveragedev"
 }
 
-# We need to grab the most compatible wheel for a given CUDA version and Torch version pair
-# At times, this requires grabbing a wheel built for a different CUDA version.
 variable "CUDA_TORCH_COMBINATIONS" {
   default = [
-    { cuda_version = "12.8.1", torch = "2.8.0", whl_src = "128" },
-    { cuda_version = "12.8.1", torch = "2.9.1", whl_src = "128" },
-    { cuda_version = "13.0.0", torch = "2.9.1", whl_src = "130" },
+    { cuda_version = "12.8.1", torch = "2.8.0" },
+    { cuda_version = "12.8.1", torch = "2.9.1" },
+    { cuda_version = "13.0.0", torch = "2.9.1" },
   ]
 }
 
@@ -32,10 +19,8 @@ variable "COMPATIBLE_BUILDS" {
           ubuntu_name    = ubuntu.name
           cuda_version   = cuda.version
           cuda_code      = replace(cuda.version, ".", "")
-          wheel_src      = combo.whl_src
           torch          = combo.torch
           torch_code     = replace(combo.torch, ".", "")
-          torch_vision   = lookup(TORCH_META[combo.torch], "torchvision", "")
         } if cuda.version == combo.cuda_version && contains(cuda.ubuntu, ubuntu.version)
       ]
     ]
@@ -69,9 +54,7 @@ target "pytorch-matrix" {
   inherits = ["pytorch-base"]
   
   args = {
-    BASE_IMAGE = "runpod/base:${RELEASE_VERSION}${RELEASE_SUFFIX}-cuda${build.cuda_code}-${build.ubuntu_name}"
-    WHEEL_SRC = build.wheel_src
-    TORCH = "torch==${build.torch}${build.torch_vision != "" ? " torchvision==${build.torch_vision}" : ""} torchaudio==${build.torch}"
+    BASE_IMAGE = "runpod/pytorch:${RELEASE_VERSION}-cu${build.cuda_code}-torch${build.torch_code}-${build.ubuntu_name}"
   }
   
   tags = [

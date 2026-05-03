@@ -2,7 +2,7 @@
 
 **PyTorch-optimized images for deep learning workflows.**
 
-Built on Runpod CUDA base images, these containers provide pre-configured PyTorch and CUDA combinations for immediate deep learning development. Skip the compatibility guesswork and setup time: just run, and start training.
+Built on Runpod PyTorch base images, these containers provide pre-configured PyTorch and CUDA combinations plus agent/developer tooling for immediate deep learning development. Skip the compatibility guesswork and setup time: just run, and start training.
 
 ### What's included
 - **Version matched**: PyTorch and CUDA combinations tested for optimal compatibility.
