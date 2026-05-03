@@ -23,31 +23,67 @@ codex mcp add exa --url https://mcp.exa.ai/mcp
 tmp_file="$(mktemp)"
 awk '
   BEGIN {
-    wrote = 0
-    in_top_level = 1
+    wrote_top_level = 0
+    wrote_tui_status = 0
+    seen_tui = 0
+    section = "top"
+  }
+
+  function emit_top_level() {
+    if (!wrote_top_level) {
+      print "approval_policy = \"never\""
+      print "sandbox_mode = \"danger-full-access\""
+      print "default_permissions = \":danger-no-sandbox\""
+      print "web_search = \"disabled\""
+      wrote_top_level = 1
+    }
+  }
+
+  function emit_tui_status() {
+    if (!wrote_tui_status) {
+      print "status_line = [\"model-with-reasoning\", \"context-remaining\", \"five-hour-limit\", \"weekly-limit\"]"
+      wrote_tui_status = 1
+    }
   }
 
   /^[[:space:]]*\[/ {
-    if (!wrote) {
-      print "web_search = \"disabled\""
-      wrote = 1
+    if (section == "top") {
+      emit_top_level()
+    } else if (section == "tui") {
+      emit_tui_status()
     }
-    in_top_level = 0
+
+    section = "other"
+    if ($0 ~ /^[[:space:]]*\[tui\][[:space:]]*$/) {
+      section = "tui"
+      seen_tui = 1
+    }
+
+    print
+    next
   }
 
-  in_top_level && /^[[:space:]]*web_search[[:space:]]*=/ {
-    if (!wrote) {
-      print "web_search = \"disabled\""
-      wrote = 1
-    }
+  section == "top" && /^[[:space:]]*(approval_policy|sandbox_mode|default_permissions|web_search)[[:space:]]*=/ {
+    next
+  }
+
+  section == "tui" && /^[[:space:]]*status_line[[:space:]]*=/ {
     next
   }
 
   { print }
 
   END {
-    if (!wrote) {
-      print "web_search = \"disabled\""
+    if (section == "top") {
+      emit_top_level()
+    } else if (section == "tui") {
+      emit_tui_status()
+    }
+
+    if (!seen_tui) {
+      print ""
+      print "[tui]"
+      emit_tui_status()
     }
   }
 ' "${config_file}" > "${tmp_file}"

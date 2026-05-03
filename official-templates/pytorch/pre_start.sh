@@ -151,6 +151,10 @@ verify_ready() {
   verify_command nvitop --version || failures=$((failures + 1))
 
   verify_file_contains "${HOME}/.codex/config.toml" 'web_search = "disabled"' || failures=$((failures + 1))
+  verify_file_contains "${HOME}/.codex/config.toml" 'approval_policy = "never"' || failures=$((failures + 1))
+  verify_file_contains "${HOME}/.codex/config.toml" 'sandbox_mode = "danger-full-access"' || failures=$((failures + 1))
+  verify_file_contains "${HOME}/.codex/config.toml" 'default_permissions = ":danger-no-sandbox"' || failures=$((failures + 1))
+  verify_file_contains "${HOME}/.codex/config.toml" 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit"]' || failures=$((failures + 1))
   verify_file_contains "${HOME}/.codex/AGENTS.md" "BEGIN RUNPOD GLOBAL AGENT INSTRUCTIONS" || failures=$((failures + 1))
   verify_file_contains "${HOME}/.config/opencode/AGENTS.md" "BEGIN RUNPOD GLOBAL AGENT INSTRUCTIONS" || failures=$((failures + 1))
   verify_file_contains "${HOME}/.claude/CLAUDE.md" "BEGIN RUNPOD GLOBAL AGENT INSTRUCTIONS" || failures=$((failures + 1))
